@@ -15,7 +15,7 @@ if(!empty($_POST)) {
         if($result) {
             unset($_POST);
             $msg["text"] = "Create new task.";
-            header('Location: http://localhost:3000/index.php');
+            header('Location: http://localhost:3000/tasks');
         } else {
             $msg = "失敗しました。";
         }
