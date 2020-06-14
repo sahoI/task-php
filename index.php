@@ -1,40 +1,46 @@
-<html>
-    <header>
-        <title>getTasks</title>
-    </header>
+<?php
+// header("Content-Type: application/json; charset=UTF-8");
+// echo $_SERVER["REQUEST_METHOD"];
+// $url = (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+// echo $url.'<br>';
+require_once "tasks.php";
+$db = new PDO('mysql:host=localhost;dbname=sampleDB', 'root', '');
+switch ($_SERVER["REQUEST_METHOD"]) {
+    case 'GET':
+        if($_SERVER["REQUEST_URI"] = '/tasks') {
+            getTasks($db);
+        } elseif($_SERVER["REQUEST_URI"] = '/tasks/:id') {
+            // $get_id = $_GET["id"];
+            // echo $get_id;
+            getTask($db,$id);
+        } 
+        break;
+    case 'POST':
+        if($_SERVER["REQUEST_URI"] = '/tasks') {
+            createTask($db);
+        }
+        break;
+    case 'PUT':
+        if($_SERVER["REQUEST_URI"] = '/tasks/:id') {
+            updateTask($db,$id);
+        }
+        break;
+    case 'DELETE':
+        if($_SERVER["REQUEST_URI"] = '/tasks/:id') {
+            deleteTask($db,$id);
+        }
+        break;
+}
 
-    <body>        
+?>
+<html>
+    <body>
         <p>Create Task</p>
         <form action="create.php" method="post">
-            Task：<input type="text" name="title"><br><br>
-            Description：<textarea name="description" rows="2" cols="40"></textarea><br>
+            Task：<input class="title" type="text" name="title"><br><br>
+            Description：<textarea class="description" name="description" rows="2" cols="40"></textarea><br>
             <input type="submit" value="送信">
         </form> 
-
-        <p>Search Task</p>
-        <form action="getTask.php" method="get">
-            id:<input type="text" name="id"><br><br>
-            <input type="submit" value="送信">
-        </form> 
-
-        <?php
-            try {
-                $db = new PDO('mysql:host=localhost;dbname=sampleDB', 'root', '');
-                $sql = "SELECT * FROM tasks";
-                $result = $db->query($sql);
-                foreach ($result as $task) {
-                    echo $task['id'].' : '.$task['title'].' / '.$task['description'];
-                    echo '<br>';
-                }
-                $pdo = null;
-            } catch(PDOException $e) {
-                echo "データベース接続失敗" . PHP_EOL;
-                echo $e->getMessage();
-                exit;
-            }
-        ?>
     </body>
 </html>
-
- 
 
