@@ -34,7 +34,6 @@ switch ($httpdmethod) {
     case 'PUT':
             '<script src="update.js"></script>';
             updateTask($db);
-        }
         break;
     case 'DELETE':
             '<script src="delete.js"></script>';
@@ -55,6 +54,7 @@ switch ($httpdmethod) {
         </form> 
         <p>Update Task</p>
         <form action="../tasks" method="post">
+            ID：<input class="id" type="text" name="id"><br><br>
             Task：<input class="title" type="text" name="title"><br><br>
             Description：<textarea class="description" name="description" rows="2" cols="40"></textarea><br>
             <input type="submit" value="送信">

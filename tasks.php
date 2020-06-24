@@ -54,19 +54,24 @@
 
     }
 
-    function updateTask($db,$id)
+    function updateTask($db)
     {
-        // $sql = "UPDATE tasks SET [id=$id, title=$title, description=$description] WHERE =$id";
-        // $sql = "SELECT * FROM tasks WHERE id=$id";
-        // $result = $db->query($sql);
-        // foreach ($result as $task) {
-        //     $id = $task["id"];
-        //     $array[$id]["title"] = $task['title'];
-        //     $array[$id]["description"] = $task['description'];
-        // }
-        // echo json_encode($array, JSON_UNESCAPED_UNICODE);
-        echo "updateTask";
-        echo '<br>';
+        if(!empty($_POST)) 
+        {
+            $id = $_POST['id'];
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            try {
+                $sql = "UPDATE tasks SET title='$title', description='$description' WHERE id=$id";
+                $result = $db->query($sql);
+                getTask($db,$id);
+                echo '変更しました' . PHP_EOL;
+            } catch (PDOException $e) {
+                echo "変更できませんでした" . PHP_EOL;
+                echo $e->getMessage();
+                exit;
+            }
+        }
     }
 
     function deleteTask($db)
