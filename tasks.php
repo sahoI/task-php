@@ -1,7 +1,5 @@
 
 <?php
-// class Tasks
-// {
     function getTasks($db) 
     {
         $sql = "SELECT * FROM tasks";
@@ -49,10 +47,11 @@
             $id = $task["id"];
             $array[$id]["title"] = $task['title'];
             $array[$id]["description"] = $task['description'];
+            echo json_encode($array, JSON_UNESCAPED_UNICODE);
         }
-        echo json_encode($array, JSON_UNESCAPED_UNICODE);
-        echo "getTask";
-        echo '<br>';
+        
+        //$arrayが空の時の処理必要
+
     }
 
     function updateTask($db,$id)
@@ -70,12 +69,22 @@
         echo '<br>';
     }
 
-    function deleteTask($db,$id)
+    function deleteTask($db)
     {
-        $sql = "DELETE FROM tasks WHERE id=$id";
-        echo "deleteTask";
-        echo '<br>';
+        if(!empty($_POST)) 
+        {
+            $id = $_POST['id'];
+            echo 'ID :'.$id.'<br>';
+            try {
+                $sql = "DELETE FROM tasks WHERE id=$id";
+                $result = $db->query($sql);
+                echo '消去できました。' . PHP_EOL;
+            } catch (PDOException $e) {
+                echo "消去できませんでした。" . PHP_EOL;
+                echo $e->getMessage();
+                exit;
+            }
+        }
     }
-// }
 ?>
 
