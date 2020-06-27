@@ -38,10 +38,8 @@
     }
 
     function getTask($db,$id)
-    {  
-        echo '<br>';
+    {
         $sql = "SELECT * FROM tasks WHERE id=$id";
-        
         $result = $db->query($sql);
         foreach ($result as $task) {
             $id = $task["id"];
@@ -54,17 +52,15 @@
 
     }
 
-    function updateTask($db)
+    function updateTask($db,$id)
     {
-        if(!empty($_POST)) 
+        if(!empty($_POST))
         {
-            $id = $_POST['id'];
             $title = $_POST['title'];
             $description = $_POST['description'];
             try {
                 $sql = "UPDATE tasks SET title='$title', description='$description' WHERE id=$id";
                 $result = $db->query($sql);
-                getTask($db,$id);
                 echo '変更しました' . PHP_EOL;
             } catch (PDOException $e) {
                 echo "変更できませんでした" . PHP_EOL;
@@ -74,21 +70,16 @@
         }
     }
 
-    function deleteTask($db)
+    function deleteTask($db,$id)
     {
-        if(!empty($_POST)) 
-        {
-            $id = $_POST['id'];
-            echo 'ID :'.$id.'<br>';
-            try {
-                $sql = "DELETE FROM tasks WHERE id=$id";
-                $result = $db->query($sql);
-                echo '消去できました。' . PHP_EOL;
-            } catch (PDOException $e) {
-                echo "消去できませんでした。" . PHP_EOL;
-                echo $e->getMessage();
-                exit;
-            }
+        try {
+            $sql = "DELETE FROM tasks WHERE id=$id";
+            $result = $db->query($sql);
+            echo '消去できました。' . PHP_EOL;
+        } catch (PDOException $e) {
+            echo "消去できませんでした。" . PHP_EOL;
+            echo $e->getMessage();
+            exit;
         }
     }
 ?>
