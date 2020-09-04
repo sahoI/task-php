@@ -20,19 +20,17 @@
         
             $msg = array();
         
-            if(empty($err_msg)) {
-                mb_language('japanese');
-                mb_internal_encoding('UTF-8');
-        
-                $sql = "INSERT INTO tasks (title, description) VALUES ('$title', '$description')";
-                $result = $db->query($sql);
-                if($result) {
-                    unset($_POST);
-                    $msg["text"] = "Create new task.";
-                    header('Location: http://localhost:3000/tasks');
-                } else {
-                    $msg = "失敗しました。";
-                }
+            mb_language('japanese');
+            mb_internal_encoding('UTF-8');
+
+            $sql = "INSERT INTO tasks (title, description) VALUES ('$title', '$description')";
+            $result = $db->query($sql);
+            if($result) {
+                unset($_POST);
+                $msg["text"] = "Create new task.";
+                header('Location: http://localhost:3000/tasks');
+            } else {
+                $msg = "失敗しました。";
             }
         }
     }
@@ -54,10 +52,11 @@
 
     function updateTask($db,$id)
     {
-        if(!empty($_POST))
+        parse_str(file_get_contents('php://input'), $put_param);
+        if(!empty($put_param))
         {
-            $title = $_POST['title'];
-            $description = $_POST['description'];
+            $title = $put_param['title'];
+            $description = $put_param['description'];
             try {
                 $sql = "UPDATE tasks SET title='$title', description='$description' WHERE id=$id";
                 $result = $db->query($sql);
